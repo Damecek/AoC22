@@ -8,9 +8,9 @@ class Couple {
 }
 
 //receive 2d array and logs as single string
-// function print(a) {
-//     console.log(a.map(row => row.join('')).join('\n') + '\n');
-// }
+function print(a) {
+    console.log(a.map(row => row.join('')).join('\n') + '\n');
+}
 
 let grid = input.split('\n').map(x => x.split(''));
 let width = grid[0].length - 1;
@@ -25,9 +25,18 @@ console.log(width, height);
 
 var result = 0;
 
-let queue = [new Couple(0, 20)];
-rank[20][0] = 1;
+let queue = [];
 
+//iterate grid and if value == 'a' then add to queue
+for (let j = 0; j < grid.length; j++) {
+    for (let k = 0; k < grid[j].length; k++) {
+        if (grid[j][k] === 'a') {
+            rank[j][k] = 1;
+            queue.push(new Couple(k, j));
+        }
+    }
+}
+console.log(queue.length);
 function evaluateHorizontal(horizontalIndex, current, currentRank, currentValue) {
     if (horizontalIndex >= 0 && horizontalIndex < width) {
         if (rank[current.y][horizontalIndex]) return;
@@ -63,8 +72,10 @@ function evaluateVertical(verticalIndex, current, currentRank, currentValue) {
     }
 }
 let i = 0;
+print(grid)
 while (queue.length) {
     let current = queue.shift();
+    // console.log(current)
     let currentValue = grid[current.y][current.x].charCodeAt(0);
     let currentRank = rank[current.y][current.x];
     // console.log(currentValue, currentRank);
@@ -79,9 +90,9 @@ while (queue.length) {
     evaluateVertical(downIndex, current, currentRank, currentValue);
     evaluateVertical(upIndex, current, currentRank, currentValue);
     i++;
-    if (i % 10 === 0) {
-        debugger;
-    }
+    // if (i % 10 === 0) {
+    //     debugger;
+    // }
 }
 
 // 413 too low : 426 too high

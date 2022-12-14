@@ -5,7 +5,7 @@ import {example} from './input.js';
 const parsedInput = input.split('\n').map(line => line.split(' -> ').map(coordinate => [...coordinate.split(',').map(Number)]));
 
 
-const width = 550;
+const width = 1000;
 const height = 200;
 
 var grid = new Array(height).fill(0).map(() => new Array(width).fill('.'));
@@ -18,6 +18,9 @@ function print(a) {
     console.log(p.join('\n') + '\n');
 }
 
+// function print(a) {
+//     console.log(a.map(row => row.join('')).join('\n') + '\n');
+// }
 function getPoint(x, y) {
     // console.log('getPoint', x, y, grid[y][x]);
     return grid[y][x];
@@ -48,7 +51,7 @@ parsedInput.forEach(pline => {
 
 
 const source = [500, 0];
-setPoint(...source, '+');
+// setPoint(...source, '+');
 
 print(grid);
 
@@ -60,7 +63,7 @@ function getNextCellToFlow(currentX, currentY) {
     ];
 
     for (const [x, y] of nextCells) {
-        if (getPoint(x, y) === '.') {
+        if (getPoint(x, y) === '.' && y !== 183) {
             // console.log('flowing to', x, y);
             return [x, y];
         }
@@ -74,15 +77,15 @@ while (true) {
     const nextPoint = getNextCellToFlow(...point);
     if (nextPoint === null) {
         setPoint(...point, 'O');
+        console.log('setting new point', point)
+        if (getPoint(...source) === 'O') {
+            break;
+        }
         point = source;
         // console.log('back to source');
         continue;
     }
     point = nextPoint;
-    // console.log('setting new point', point)
-    if (nextPoint[1] === height - 1) {
-        break;
-    }
 }
 
 print(grid);
